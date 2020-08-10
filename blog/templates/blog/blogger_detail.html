@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Blogger: {{ blogger }}</h1>
+  <p> 
+      {% if user.blogger == blogger %}
+      <a href="{% url 'blog:blogger-update' pk=blogger.pk%}">Update account data</a>
+      <a href="{% url 'blog:blogger-delete' pk=blogger.pk%}">Delete account</a>
+      {% endif %}  
+  </p>
+  <div style="margin-left: 20px; margin-top: 20px">
+    <h4>Bio</h4>
+    <p>{{ blogger.bio }}</p>
+    {% if blogger.post_set.exists %}
+    <h4>Posts</h4>
+        <ul>
+            {% for post in blogger.post_set.all %}
+                <li>
+                    <a href="{{post.get_absolute_url }}"> {{ post }}</a> ({{post.date}})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p> This blogger has no posts yet.</p>
+    {% endif%}
+  </div>
+{% endblock %}
